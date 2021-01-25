@@ -1,14 +1,28 @@
-pipeline {
-    agent {
-        docker {
-            image 'maven:3-alpine' 
-            args '-v /root/.m2:/root/.m2' 
-        }
-    }
+pipeline{
+    agent any
     stages {
-        stage('Build') { 
-            steps {
-                sh 'mvn -B -DskipTests clean package' 
+        stage("Checkout availablity"){
+            steps{
+                sh "hostname"
+                sh "echo 'welcome to steps in stage checkout'"
+            }
+        }
+        stage("SCM-Clone"){
+            steps{
+                sh "date"
+                sh "echo 'welcome to steps in stage steps'"
+            }
+        }
+        stage("Build"){
+            steps{
+                sh "cal"
+                sh "echo 'welcome to steps in stage Build'"
+            }
+        }
+        stage("Test"){
+            steps{
+                sh "mvn --version"
+                sh "echo 'welcome to steps in stage steps'"
             }
         }
     }
