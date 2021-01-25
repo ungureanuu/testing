@@ -1,28 +1,29 @@
 pipeline{
     agent any
+    tools {
+        maven 'maven1'
+    }
     stages {
-        stage("Checkout availablity"){
+        stage("SCM"){
             steps{
-                sh "hostname"
-                sh "echo 'welcome to steps in stage checkout'"
+                git changelog: false, url: 'https://github.com/ungureanuu/testing.git'
+                echo ' First step to cennect to SourceCode'
             }
         }
-        stage("SCM-Clone"){
+        stage("Build code"){
             steps{
-                sh "date"
-                sh "echo 'welcome to steps in stage steps'"
-            }
-        }
-        stage("Build"){
-            steps{
-                sh "cal"
-                sh "echo 'welcome to steps in stage Build'"
+                sh label: '', script: 'mvn compile'
             }
         }
         stage("Test"){
             steps{
                 sh "mvn --version"
-                sh "echo 'welcome to steps in stage steps'"
+                sh label: '', script: 'mvn test'
+            }
+        }
+        stage("Publish Junit Report"){
+            steps{
+                junit '**/target/surefire-reports/*.xml'
             }
         }
     }
